@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: "20240707120627"
+      author: "jovizulfikar"
+      changes:
+        - tagDatabase:
+            tag: "20240707120627"
+  - changeSet:
+      id: "20250222160000"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250222160000C_create_clients_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250222160000R_create_clients_table.sql"
+  - changeSet:
+      id: "20250222162800"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250222162800C_create_scopes_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250222162800R_create_scopes_table.sql"
+  - changeSet:
+      id: "20250222181300"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250222181300C_create_client_audience_uris_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250222181300R_create_client_audience_uris_table.sql"
+  - changeSet:
+      id: "20250222183800"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250222183800C_create_client_grant_types_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250222183800R_create_client_grant_types_table.sql"
+  - changeSet:
+      id: "20250222184400"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250222184400C_create_client_secrets_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250222184400R_create_client_secrets_table.sql"
+  - changeSet:
+      id: "20250222190300"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250222190300C_create_client_scopes_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250222190300R_create_client_scopes_table.sql"
