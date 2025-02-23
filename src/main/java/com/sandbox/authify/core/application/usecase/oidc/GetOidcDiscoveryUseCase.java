@@ -16,7 +16,7 @@ public class GetOidcDiscoveryUseCase {
         private String jwksUri;
     }
 
-    public Response getOpenidConfiguration() {
+    public Response getOidcDiscovery() {
         return Response.builder()
                 .jwksUri(oidcDiscoveryConfig.getJwksUri())
                 .build();

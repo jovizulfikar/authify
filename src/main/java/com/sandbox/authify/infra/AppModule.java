@@ -85,14 +85,6 @@ public class AppModule {
         var objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         objectMapper.setSerializationInclusion(Include.NON_NULL);
-        return objectMapper;
-    }
-
-    @Bean
-    public ObjectMapper snakeCaseObjectMapper() {
-        var objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.setSerializationInclusion(Include.NON_NULL);
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
         return objectMapper;
     }
