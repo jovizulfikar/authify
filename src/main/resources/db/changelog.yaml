@@ -59,3 +59,21 @@ databaseChangeLog:
       rollback:
         - sqlFile:
             path: "db/migration/20250222190300R_create_client_scopes_table.sql"
+  - changeSet:
+      id: "20250223204400"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250223204400C_create_users_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250223204400R_create_users_table.sql"
+  - changeSet:
+      id: "20250223210800"
+      author: "jovizulfikar"
+      changes:
+        - sqlFile:
+            path: "db/migration/20250223210800C_create_refresh_tokens_table.sql"
+      rollback:
+        - sqlFile:
+            path: "db/migration/20250223210800R_create_refresh_tokens_table.sql"

@@ -1,13 +1,15 @@
 package com.sandbox.authify.core.domain.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "client_secrets")
+@Entity(name = "client_secrets")
 @Setter
 @Getter
 public class ClientSecret {

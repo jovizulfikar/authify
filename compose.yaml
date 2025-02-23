@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:11-beta1-alpine
+    image: library/postgres:9.5.21-alpine
     container_name: authify-db
     environment:
       POSTGRES_DB: authify
