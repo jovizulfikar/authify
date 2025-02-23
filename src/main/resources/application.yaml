@@ -29,3 +29,14 @@ spring:
 logging:
   level:
     com.authify: DEBUG
+
+jwt:
+  issuer: ${JWT_ISSUER}
+
+jws:
+  key-id: ${JWS_KEY_ID}
+  private-key: ${JWS_PRIVATE_KEY}
+  public-key: ${JWS_PUBLIC_KEY}
+
+oidc-discovery:
+  jwks-uri: ${OIDC_DISCOVERY_JWKS_URI}

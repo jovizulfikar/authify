@@ -19,8 +19,8 @@ public class MinLength implements ConstraintValidator {
             return true;
         }
 
-        if (value instanceof String) {
-            return ((String) value).length() >= min;
+        if (value instanceof String strValue) {
+            return strValue.length() >= min;
         }
 
         throw new UnsupportedOperationException("Can't validate type of " + value.getClass().getName());

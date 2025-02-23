@@ -1,5 +1,6 @@
 package com.sandbox.authify.core.application.service;
 
+import com.sandbox.authify.core.common.config.JwsConfig;
 import com.sandbox.authify.core.common.config.JwtConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,6 +20,7 @@ import java.util.Objects;
 public class KeyManager {
 
     private final JwtConfig jwtConfig;
+    private final JwsConfig jwsConfig;
     private KeyPair keyPair;
 
     @SneakyThrows
@@ -29,10 +31,10 @@ public class KeyManager {
 
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-        byte[] privateKeyBytes = Base64.getDecoder().decode(jwtConfig.getPrivateKey());
+        byte[] privateKeyBytes = Base64.getDecoder().decode(jwsConfig.getPrivateKey());
         PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
 
-        byte[] publicKeyBytes = Base64.getDecoder().decode(jwtConfig.getPublicKey());
+        byte[] publicKeyBytes = Base64.getDecoder().decode(jwsConfig.getPublicKey());
         PublicKey publicKey = keyFactory.generatePublic(new X509EncodedKeySpec(publicKeyBytes));
 
         keyPair = new KeyPair(publicKey, privateKey);

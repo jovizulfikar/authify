@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface ScopeRepository {
     Optional<Scope> findByName(String name);
-    Scope save(Scope apiScope);
+    Scope save(Scope scope);
 }

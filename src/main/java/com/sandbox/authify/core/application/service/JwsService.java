@@ -1,5 +1,6 @@
 package com.sandbox.authify.core.application.service;
 
+import com.sandbox.authify.core.common.config.JwsConfig;
 import com.sandbox.authify.core.common.config.JwtConfig;
 import com.sandbox.authify.core.domain.entity.Client;
 import com.sandbox.authify.core.domain.entity.User;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class JwsService {
     
     private final JwtConfig jwtConfig;
+    private final JwsConfig jwsConfig;
     private final IdGenerator idGenerator;
     private final KeyManager keyManager;
 
@@ -25,7 +27,7 @@ public class JwsService {
         var iat = System.currentTimeMillis();
         var exp = iat + TimeUnit.SECONDS.toMillis(client.getAccessTokenTtl());
         var jti = idGenerator.generate();
-        var aud = !client.getAudienceUris().isEmpty() ? client.getAudienceUris() : null;
+        var aud = client.getAudienceUris();
 
         var rsaPrivateKey = keyManager.getRsaPrivateKey();
 
@@ -44,7 +46,7 @@ public class JwsService {
                 .claims(claims)
                 .key(rsaPrivateKey)
                 .algorithm(SignatureAlgorithm.RS256)
-                .keyId(jwtConfig.getKeyId())
+                .keyId(jwsConfig.getKeyId())
                 .build();
     }
 

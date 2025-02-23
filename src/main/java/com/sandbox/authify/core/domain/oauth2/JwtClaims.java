@@ -16,8 +16,10 @@ public class JwtClaims {
     private String sub;
     private String clientId;
     private String jti;
-    private Set<String> scope = new HashSet<>();
     private Long authTime;
     private Byte acr;
     private String amr;
+
+    @Builder.Default
+    private Set<String> scope = new HashSet<>();
 }
