@@ -1,12 +1,12 @@
 package com.sandbox.authify.core.domain.jose;
 
 import com.sandbox.authify.core.domain.oauth2.JwtClaims;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.security.Key;
 
-@Setter
+@Builder
 @Getter
 public class JsonWebSignature {
     private JwtClaims claims;

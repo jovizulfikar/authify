@@ -1,9 +1,9 @@
 package com.sandbox.authify.core.domain.jose;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
+@Builder
 @Getter
 public class JsonWebKey {
     private String kid;

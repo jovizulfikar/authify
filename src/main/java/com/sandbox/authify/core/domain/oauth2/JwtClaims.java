@@ -1,12 +1,12 @@
 package com.sandbox.authify.core.domain.oauth2;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Setter
+@Builder
 @Getter
 public class JwtClaims {
     private String iss;
