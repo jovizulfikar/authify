@@ -1,6 +1,6 @@
 package com.sandbox.authify.infra.config;
 
-import com.sandbox.authify.core.common.config.OidcDiscoveryConfig;
+import com.sandbox.authify.core.port.config.OidcDiscoveryConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

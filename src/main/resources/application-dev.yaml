@@ -2,6 +2,9 @@ spring:
   datasource:
     hikari:
       maximum-pool-size: 10
+  data:
+    redis:
+      port: 40139
   jpa:
     properties:
       jakarta:

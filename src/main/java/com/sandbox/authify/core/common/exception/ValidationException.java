@@ -5,12 +5,15 @@ import lombok.Getter;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-@Getter
 public class ValidationException extends Exception {
+
+    @Getter
     private final Map<String, Set<String>> errors;
-    private String firstError = "VALIDATION_ERROR";
+
+    private final AtomicReference<String> firstError = new AtomicReference<>("VALIDATION_ERROR");
 
     public ValidationException(Map<String, Set<String>> errors) {
         this.errors = errors.entrySet().stream()
@@ -20,7 +23,7 @@ public class ValidationException extends Exception {
         for (Map.Entry<String,Set<String>> error : this.errors.entrySet()) {
             var fieldErrors = error.getValue();
             if (!fieldErrors.isEmpty()) {
-                firstError = fieldErrors.stream().findFirst().orElse(firstError);
+                firstError.set(fieldErrors.stream().findFirst().orElse(firstError.get()));
                 break;
             }
         }
@@ -28,6 +31,6 @@ public class ValidationException extends Exception {
 
     @Override
     public String getMessage() {
-        return firstError;
+        return firstError.get();
     }
 }

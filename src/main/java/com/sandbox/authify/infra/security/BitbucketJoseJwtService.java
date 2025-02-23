@@ -2,7 +2,7 @@ package com.sandbox.authify.infra.security;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sandbox.authify.core.common.config.JwtConfig;
+import com.sandbox.authify.core.port.config.JwtConfig;
 import com.sandbox.authify.core.domain.jose.JsonWebSignature;
 import com.sandbox.authify.core.domain.jose.SignatureAlgorithm;
 import com.sandbox.authify.core.domain.oauth2.JwtClaims;

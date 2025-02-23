@@ -1,6 +1,6 @@
 package com.sandbox.authify.infra.config;
 
-import com.sandbox.authify.core.common.config.JwsConfig;
+import com.sandbox.authify.core.port.config.JwsConfig;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

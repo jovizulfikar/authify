@@ -1,7 +1,7 @@
 package com.sandbox.authify.core.application.service;
 
-import com.sandbox.authify.core.common.config.JwsConfig;
-import com.sandbox.authify.core.common.config.JwtConfig;
+import com.sandbox.authify.core.port.config.JwsConfig;
+import com.sandbox.authify.core.port.config.JwtConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 

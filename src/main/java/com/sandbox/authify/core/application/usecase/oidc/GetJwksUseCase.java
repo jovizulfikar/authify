@@ -1,7 +1,7 @@
 package com.sandbox.authify.core.application.usecase.oidc;
 
 import com.sandbox.authify.core.application.service.KeyManager;
-import com.sandbox.authify.core.common.config.JwsConfig;
+import com.sandbox.authify.core.port.config.JwsConfig;
 import com.sandbox.authify.core.common.util.Base64;
 import com.sandbox.authify.core.domain.jose.JsonWebKey;
 import com.sandbox.authify.core.domain.jose.JsonWebKeySet;

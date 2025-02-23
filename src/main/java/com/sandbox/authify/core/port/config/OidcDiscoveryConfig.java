@@ -1,4 +1,4 @@
-package com.sandbox.authify.core.common.config;
+package com.sandbox.authify.core.port.config;
 
 public interface OidcDiscoveryConfig {
     String getJwksUri();

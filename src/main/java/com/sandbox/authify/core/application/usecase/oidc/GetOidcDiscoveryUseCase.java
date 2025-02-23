@@ -1,6 +1,6 @@
 package com.sandbox.authify.core.application.usecase.oidc;
 
-import com.sandbox.authify.core.common.config.OidcDiscoveryConfig;
+import com.sandbox.authify.core.port.config.OidcDiscoveryConfig;
 import lombok.*;
 
 @RequiredArgsConstructor

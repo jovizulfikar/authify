@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExceptionTranslator {
 
+    private static final String ERRORS_UNAUTHORIZED = "/errors/unauthorized";
+    private static final String UNAUTHORIZED = "Unauthorized";
+
     public static ProblemDetail defaultProblemDetail() {
         var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong.");
         var title = Optional.ofNullable(problemDetail.getTitle()).orElse("");
@@ -67,14 +70,20 @@ public class ExceptionTranslator {
                 yield pd;
             } case JwtAuthenticationFilter.ERROR_JWT_AUTH_FILTER_UNAUTHORIZED: {
                 pd = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-                pd.setType(URI.create("/errors/unauthorized"));
-                pd.setTitle("Unauthorized");
+                pd.setType(URI.create(ERRORS_UNAUTHORIZED));
+                pd.setTitle(UNAUTHORIZED);
                 pd.setDetail("Bearer token is missing or invalid.");
+                yield pd;
+            } case JwtAuthenticationFilter.ERROR_JWT_AUTH_FILTER_TOKEN_REVOKED: {
+                pd = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+                pd.setType(URI.create(ERRORS_UNAUTHORIZED));
+                pd.setTitle(UNAUTHORIZED);
+                pd.setDetail("The access token has been revoked.");
                 yield pd;
             } case ClientAuthenticationFilter.ERROR_CLIENT_AUTH_FILTER_UNAUTHORIZED: {
                 pd = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-                pd.setType(URI.create("/errors/unauthorized"));
-                pd.setTitle("Unauthorized");
+                pd.setType(URI.create(ERRORS_UNAUTHORIZED));
+                pd.setTitle(UNAUTHORIZED);
                 pd.setDetail("Basic token is missing or invalid.");
                 yield pd;
             } case ApiScopeInterceptor.ERROR_INVALID_SCOPE: {
@@ -131,7 +140,7 @@ public class ExceptionTranslator {
         var pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         pd.setType(URI.create("/errors/validation"));
         pd.setTitle("Validation Error");
-        pd.setDetail(mapValidationError(e.getFirstError()));
+        pd.setDetail(mapValidationError(e.getMessage()));
         pd.setProperty("errors", errors);
         return pd;
     }

@@ -20,14 +20,15 @@ import com.sandbox.authify.core.application.usecase.revocation.provider.Revocati
 import com.sandbox.authify.core.application.usecase.revocation.provider.RevokeAccessToken;
 import com.sandbox.authify.core.application.usecase.revocation.provider.RevokeRefreshToken;
 import com.sandbox.authify.core.application.usecase.user.RegisterUserUseCase;
-import com.sandbox.authify.core.common.config.JwsConfig;
-import com.sandbox.authify.core.common.config.JwtConfig;
-import com.sandbox.authify.core.common.config.OidcDiscoveryConfig;
+import com.sandbox.authify.core.port.config.JwsConfig;
+import com.sandbox.authify.core.port.config.JwtConfig;
+import com.sandbox.authify.core.port.config.OidcDiscoveryConfig;
 import com.sandbox.authify.core.port.repository.ClientRepository;
 import com.sandbox.authify.core.port.repository.RefreshTokenRepository;
 import com.sandbox.authify.core.port.repository.UserRepository;
 import com.sandbox.authify.core.port.security.Hashing;
 import com.sandbox.authify.core.port.security.JwtService;
+import com.sandbox.authify.core.port.service.AccessTokenBlacklist;
 import com.sandbox.authify.core.port.util.IdGenerator;
 import com.sandbox.authify.core.port.util.PasswordGenerator;
 import com.sandbox.authify.infra.config.AuthifyJwtConfig;
@@ -40,6 +41,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
 @RequiredArgsConstructor
@@ -177,12 +181,24 @@ public class AppModule {
     }
 
     @Bean
-    public RevokeAccessToken revokeAccessToken() {
-        return new RevokeAccessToken();
+    public RevokeAccessToken revokeAccessToken(AccessTokenBlacklist accessTokenBlacklist) {
+        return new RevokeAccessToken(accessTokenBlacklist);
     }
 
     @Bean
     public ClientService clientService(ClientRepository clientRepository, Hashing hashing) {
         return new ClientService(clientRepository, hashing);
+    }
+
+    @Bean
+    public LettuceConnectionFactory connectionFactory() {
+        return new LettuceConnectionFactory();
+    }
+
+    @Bean
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+        return template;
     }
 }

@@ -1,4 +1,4 @@
-package com.sandbox.authify.infra.jpa.repository;
+package com.sandbox.authify.infra.repository;
 
 import com.sandbox.authify.core.domain.entity.Client;
 import com.sandbox.authify.core.port.repository.ClientRepository;
