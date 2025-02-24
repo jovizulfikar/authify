@@ -1,22 +1,26 @@
 package com.sandbox.authify.core.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity(name = "clients")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Client {
 
     @Id
-    @Column(name = "id", nullable = false, length = 36)
+    @Column(name = "id", length = 36)
     private String id;
 
-    @Column(name = "client_id", unique = true, nullable = false, length = 36)
+    @Column(name = "client_id", unique = true, length = 36)
     private String clientId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

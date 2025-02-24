@@ -1,19 +1,21 @@
 package com.sandbox.authify.core.application.service;
 
-import com.sandbox.authify.core.port.config.JwsConfig;
-import com.sandbox.authify.core.port.config.JwtConfig;
 import com.sandbox.authify.core.domain.entity.Client;
 import com.sandbox.authify.core.domain.entity.User;
 import com.sandbox.authify.core.domain.jose.JsonWebSignature;
 import com.sandbox.authify.core.domain.jose.SignatureAlgorithm;
 import com.sandbox.authify.core.domain.oauth2.JwtClaims;
+import com.sandbox.authify.core.port.config.JwsConfig;
+import com.sandbox.authify.core.port.config.JwtConfig;
 import com.sandbox.authify.core.port.util.IdGenerator;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class JwsService {
     

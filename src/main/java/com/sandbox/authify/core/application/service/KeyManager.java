@@ -1,7 +1,7 @@
 package com.sandbox.authify.core.application.service;
 
 import com.sandbox.authify.core.port.config.JwsConfig;
-import com.sandbox.authify.core.port.config.JwtConfig;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -16,10 +16,10 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Objects;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class KeyManager {
 
-    private final JwtConfig jwtConfig;
     private final JwsConfig jwsConfig;
     private KeyPair keyPair;
 

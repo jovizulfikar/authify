@@ -12,11 +12,13 @@ import com.sandbox.authify.core.domain.oauth2.TokenType;
 import com.sandbox.authify.core.port.repository.UserRepository;
 import com.sandbox.authify.core.port.security.Hashing;
 import com.sandbox.authify.core.port.security.JwtService;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class AuthenticateResourceOwnerPasswordCredentials implements AuthenticationProvider {
 

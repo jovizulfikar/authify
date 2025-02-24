@@ -1,8 +1,10 @@
 package com.sandbox.authify.core.application.usecase.oidc;
 
 import com.sandbox.authify.core.port.config.OidcDiscoveryConfig;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.*;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class GetOidcDiscoveryUseCase {
 

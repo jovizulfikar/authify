@@ -13,6 +13,7 @@ import com.sandbox.authify.core.application.usecase.authentication.provider.Auth
 import com.sandbox.authify.core.application.usecase.authentication.provider.AuthenticateRefreshToken;
 import com.sandbox.authify.core.application.usecase.authentication.provider.AuthenticateResourceOwnerPasswordCredentials;
 import com.sandbox.authify.core.application.usecase.authentication.provider.AuthenticationProviderFactory;
+import com.sandbox.authify.core.application.usecase.client.GetClientsUseCase;
 import com.sandbox.authify.core.application.usecase.client.RegisterClientUseCase;
 import com.sandbox.authify.core.application.usecase.oidc.GetJwksUseCase;
 import com.sandbox.authify.core.application.usecase.oidc.GetOidcDiscoveryUseCase;
@@ -31,109 +32,46 @@ import com.sandbox.authify.core.port.security.JwtService;
 import com.sandbox.authify.core.port.service.AccessTokenBlacklist;
 import com.sandbox.authify.core.port.util.IdGenerator;
 import com.sandbox.authify.core.port.util.PasswordGenerator;
-import com.sandbox.authify.infra.config.AuthifyJwtConfig;
-import com.sandbox.authify.infra.security.BcryptHash;
-import com.sandbox.authify.infra.security.BitbucketJoseJwtService;
-import com.sandbox.authify.infra.util.NanoIdGenerator;
-import com.sandbox.authify.infra.util.PassayPasswordGenerator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import com.sandbox.authify.infra.util.ClientIdSuffixGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
-@RequiredArgsConstructor
 public class AppModule {
 
     @Bean
-    public JwtConfig jwtConfig(AuthifyJwtConfig authifyJwtConfig) {
-        return authifyJwtConfig;
+    public ClientService clientService(ClientRepository clientRepository, Hashing hashing) {
+        return new ClientService(clientRepository, hashing);
     }
 
     @Bean
-    public JwtService jwtService(BitbucketJoseJwtService bitbucketJoseJwtService) {
-        return bitbucketJoseJwtService;
+    public KeyManager keyManager(JwsConfig jwsConfig) {
+        return new KeyManager(jwsConfig);
     }
 
     @Bean
-    public PasswordGenerator passwordGenerator(PassayPasswordGenerator passayPasswordGenerator) {
-        return passayPasswordGenerator;
+    public GetJwksUseCase getJwksUseCase(KeyManager keyManager, JwsConfig jwsConfig) {
+        return new GetJwksUseCase(keyManager, jwsConfig);
     }
 
     @Bean
-    public IdGenerator idGenerator(NanoIdGenerator nanoIdGenerator) {
-        return nanoIdGenerator;
+    public GetOidcDiscoveryUseCase getOpenidConfigurationUseCase(OidcDiscoveryConfig oidcDiscoveryConfig) {
+        return new GetOidcDiscoveryUseCase(oidcDiscoveryConfig);
     }
 
-    @Bean
-    public Hashing hashing(BcryptHash bcryptHash) {
-        return bcryptHash;
-    }
-    
     @Bean
     public RegisterClientUseCase registerClientUseCase(
             ClientRepository clientRepository,
             IdGenerator idGenerator,
+            ClientIdSuffixGenerator clientIdSuffixGenerator,
             Hashing hashing,
             PasswordGenerator passwordGenerator
     ) {
-        return new RegisterClientUseCase(clientRepository, idGenerator, hashing, passwordGenerator);
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        var objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.setSerializationInclusion(Include.NON_NULL);
-        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-        return objectMapper;
-    }
-
-    @Bean
-    public RegisterUserUseCase registerUserUseCase(UserRepository userRepository, Hashing hashing) {
-        return new RegisterUserUseCase(userRepository, hashing);
-    }
-
-    @Bean
-    public AuthenticateClientCredentials clientCredentials(
-            ClientService clientService,
-            JwsService jwsService,
-            JwtService jwtService,
-            RefreshTokenService refreshTokenService
-    ) {
-        return new AuthenticateClientCredentials(jwsService, jwtService, refreshTokenService, clientService);
-    }
-
-    @Bean
-    @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
-    public KeyManager keyManager(JwtConfig jwtConfig, JwsConfig jwsConfig) {
-        return new KeyManager(jwtConfig, jwsConfig);
-    }
-
-    @Bean
-    public JwsService jwsService(JwtConfig jwtConfig, JwsConfig jwsConfig, IdGenerator idGenerator, KeyManager keyManager) {
-        return new JwsService(jwtConfig, jwsConfig, idGenerator, keyManager);
-    }
-
-    @Bean
-    public RefreshTokenService refreshTokenService(IdGenerator idGenerator, RefreshTokenRepository refreshTokenRepository) {
-        return new RefreshTokenService(idGenerator, refreshTokenRepository);
-    }
-
-    @Bean
-    public AuthenticateRefreshToken refreshToken(
-            ClientService clientService,
-            Hashing hashing,
-            RefreshTokenRepository refreshTokenRepository,
-            JwsService jwsService,
-            JwtService jwtService,
-            RefreshTokenService refreshTokenService
-    ) {
-        return new AuthenticateRefreshToken(clientService, refreshTokenRepository, jwsService, jwtService, refreshTokenService);
+        return new RegisterClientUseCase(clientRepository, idGenerator, clientIdSuffixGenerator, hashing,
+                passwordGenerator);
     }
 
     @Bean
@@ -158,13 +96,34 @@ public class AppModule {
     }
 
     @Bean
-    public GetJwksUseCase getJwksUseCase(KeyManager keyManager, JwsConfig jwsConfig) {
-        return new GetJwksUseCase(keyManager, jwsConfig);
+    public JwsService jwsService(JwtConfig jwtConfig, JwsConfig jwsConfig, IdGenerator idGenerator, KeyManager keyManager) {
+        return new JwsService(jwtConfig, jwsConfig, idGenerator, keyManager);
     }
 
     @Bean
-    public GetOidcDiscoveryUseCase getOpenidConfigurationUseCase(OidcDiscoveryConfig oidcDiscoveryConfig) {
-        return new GetOidcDiscoveryUseCase(oidcDiscoveryConfig);
+    public RefreshTokenService refreshTokenService(IdGenerator idGenerator, RefreshTokenRepository refreshTokenRepository) {
+        return new RefreshTokenService(idGenerator, refreshTokenRepository);
+    }
+
+    @Bean
+    public AuthenticateClientCredentials clientCredentials(
+            ClientService clientService,
+            JwsService jwsService,
+            JwtService jwtService,
+            RefreshTokenService refreshTokenService
+    ) {
+        return new AuthenticateClientCredentials(jwsService, jwtService, refreshTokenService, clientService);
+    }
+
+    @Bean
+    public AuthenticateRefreshToken refreshToken(
+            ClientService clientService,
+            RefreshTokenRepository refreshTokenRepository,
+            JwsService jwsService,
+            JwtService jwtService,
+            RefreshTokenService refreshTokenService
+    ) {
+        return new AuthenticateRefreshToken(clientService, refreshTokenRepository, jwsService, jwtService, refreshTokenService);
     }
 
     @Bean
@@ -176,18 +135,32 @@ public class AppModule {
     }
 
     @Bean
-    public RevokeRefreshToken revokeRefreshToken(RefreshTokenRepository refreshTokenRepository) {
-        return new RevokeRefreshToken(refreshTokenRepository);
-    }
-
-    @Bean
     public RevokeAccessToken revokeAccessToken(AccessTokenBlacklist accessTokenBlacklist) {
         return new RevokeAccessToken(accessTokenBlacklist);
     }
 
     @Bean
-    public ClientService clientService(ClientRepository clientRepository, Hashing hashing) {
-        return new ClientService(clientRepository, hashing);
+    public RevokeRefreshToken revokeRefreshToken(RefreshTokenRepository refreshTokenRepository) {
+        return new RevokeRefreshToken(refreshTokenRepository);
+    }
+
+    @Bean
+    public RegisterUserUseCase registerUserUseCase(UserRepository userRepository, Hashing hashing) {
+        return new RegisterUserUseCase(userRepository, hashing);
+    }
+
+    @Bean
+    public GetClientsUseCase getClientsUseCase(ClientRepository clientRepository) {
+        return new GetClientsUseCase(clientRepository);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        var objectMapper = new ObjectMapper();
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        objectMapper.setSerializationInclusion(Include.NON_NULL);
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        return objectMapper;
     }
 
     @Bean

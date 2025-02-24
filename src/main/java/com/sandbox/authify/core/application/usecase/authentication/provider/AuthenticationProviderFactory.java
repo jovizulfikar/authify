@@ -2,9 +2,11 @@ package com.sandbox.authify.core.application.usecase.authentication.provider;
 
 import com.sandbox.authify.core.common.exception.AppException;
 import com.sandbox.authify.core.domain.oauth2.AuthorizationGrantType;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class AuthenticationProviderFactory {
 

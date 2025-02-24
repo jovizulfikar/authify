@@ -33,7 +33,7 @@ spring:
 
 logging:
   level:
-    com.authify: DEBUG
+    com.sandbox.authify: DEBUG
 
 jwt:
   issuer: ${JWT_ISSUER}

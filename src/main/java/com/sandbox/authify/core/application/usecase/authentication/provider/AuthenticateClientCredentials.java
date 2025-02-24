@@ -10,11 +10,13 @@ import com.sandbox.authify.core.domain.entity.Scope;
 import com.sandbox.authify.core.domain.oauth2.AuthorizationGrantType;
 import com.sandbox.authify.core.domain.oauth2.TokenType;
 import com.sandbox.authify.core.port.security.JwtService;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class AuthenticateClientCredentials implements AuthenticationProvider {
 

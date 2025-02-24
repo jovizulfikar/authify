@@ -21,13 +21,14 @@ public class RegisterClientUseCase {
 
     private final ClientRepository clientRepository;
     private final IdGenerator idGenerator;
+    private final IdGenerator clientIdSuffixGenerator;
     private final Hashing passwordHash;
     private final PasswordGenerator passwordGenerator;
 
     public static final String ERROR_CLIENT_ID_VALIDATION_NOT_NULL = "REGISTER_CLIENT_USE_CASE.CLIENT_ID_VALIDATION_NOT_NULL";
     public static final String ERROR_CLIENT_NAME_VALIDATION_NOT_NULL = "REGISTER_CLIENT_USE_CASE.CLIENT_NAME_VALIDATION_NOT_NULL";
 
-    @Setter
+    @Builder
     @Getter
     public static class Request {
         private String clientId;
@@ -36,6 +37,7 @@ public class RegisterClientUseCase {
 
     @Builder
     @Getter
+    @ToString
     public static class Response {
         private String clientId;
         private String clientName;
@@ -48,28 +50,30 @@ public class RegisterClientUseCase {
         validate(request);
 
         var password = passwordGenerator.generate(32);
-        var clientId = request.clientId + "-" + idGenerator.generate(6).toLowerCase();
+        var clientId = request.clientId + "-" + clientIdSuffixGenerator.generate();
         var clientSecret = ClientSecret.builder()
-            .secret(passwordHash.hash(password))
-            .issuedAt(LocalDateTime.now())
-            .build();
+                .id(idGenerator.generate())
+                .secret(passwordHash.hash(password))
+                .issuedAt(LocalDateTime.now())
+                .build();
 
         var client = Client.builder()
-            .clientId(clientId)
-            .name(request.clientName)
-            .grantTypes(new HashSet<>(Collections.singletonList(AuthorizationGrantType.CLIENT_CREDENTIALS.getGranType())))
-            .secrets(new HashSet<>(Collections.singletonList(clientSecret)))
-            .issuedAt(LocalDateTime.now())
-            .build();
+                .id(idGenerator.generate())
+                .clientId(clientId)
+                .name(request.clientName)
+                .grantTypes(new HashSet<>(Collections.singletonList(AuthorizationGrantType.CLIENT_CREDENTIALS.getGranType())))
+                .secrets(new HashSet<>(Collections.singletonList(clientSecret)))
+                .issuedAt(LocalDateTime.now())
+                .build();
 
         clientRepository.save(client);
 
         return Response.builder()
-            .clientId(client.getClientId())
-            .clientName(client.getName())
-            .clientSecret(password)
-            .clientIssuedAt(client.getIssuedAt().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(client.getIssuedAt())))
-            .build();
+                .clientId(client.getClientId())
+                .clientName(client.getName())
+                .clientSecret(password)
+                .clientIssuedAt(client.getIssuedAt().toEpochSecond(ZoneId.systemDefault().getRules().getOffset(client.getIssuedAt())))
+                .build();
     }
 
     @SneakyThrows

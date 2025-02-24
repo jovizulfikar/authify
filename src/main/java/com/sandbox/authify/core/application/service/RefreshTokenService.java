@@ -5,6 +5,7 @@ import com.sandbox.authify.core.domain.entity.RefreshToken;
 import com.sandbox.authify.core.domain.entity.User;
 import com.sandbox.authify.core.port.repository.RefreshTokenRepository;
 import com.sandbox.authify.core.port.util.IdGenerator;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
@@ -13,6 +14,7 @@ import java.time.ZoneId;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class RefreshTokenService {
 

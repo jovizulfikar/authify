@@ -2,9 +2,11 @@ package com.sandbox.authify.core.application.usecase.revocation.provider;
 
 import com.sandbox.authify.core.common.exception.AppException;
 import com.sandbox.authify.core.domain.oauth2.TokenTypeHint;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class RevocationProviderFactory {
 

@@ -11,12 +11,14 @@ import com.sandbox.authify.core.domain.oauth2.AuthorizationGrantType;
 import com.sandbox.authify.core.domain.oauth2.TokenType;
 import com.sandbox.authify.core.port.repository.RefreshTokenRepository;
 import com.sandbox.authify.core.port.security.JwtService;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class AuthenticateRefreshToken implements AuthenticationProvider {
 

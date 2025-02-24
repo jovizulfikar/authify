@@ -18,7 +18,7 @@ public class UserController {
     private final RegisterUserUseCase registerUserUseCase;
 
     @PostMapping
-    @ApiScope("sso.register-user")
+    @ApiScope("user:register")
     public ResponseEntity<RegisterUserUseCase.Response> postUsers(@RequestBody RegisterUserUseCase.Request request) {
         var response = registerUserUseCase.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
