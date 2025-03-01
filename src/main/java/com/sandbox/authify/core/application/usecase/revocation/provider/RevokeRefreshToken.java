@@ -3,9 +3,11 @@ package com.sandbox.authify.core.application.usecase.revocation.provider;
 import com.sandbox.authify.core.application.usecase.revocation.RevokeTokenRequest;
 import com.sandbox.authify.core.application.usecase.revocation.RevokeTokenResponse;
 import com.sandbox.authify.core.port.repository.RefreshTokenRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class RevokeRefreshToken implements RevocationProvider {
 

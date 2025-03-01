@@ -4,9 +4,11 @@ import com.sandbox.authify.core.common.exception.AppException;
 import com.sandbox.authify.core.domain.entity.Client;
 import com.sandbox.authify.core.port.repository.ClientRepository;
 import com.sandbox.authify.core.port.security.Hashing;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class ClientService {
 

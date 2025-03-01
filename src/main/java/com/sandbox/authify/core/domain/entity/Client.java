@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Entity(name = "clients")
 @Builder
@@ -47,11 +48,13 @@ public class Client {
             inverseJoinColumns = @JoinColumn(name = "scope_id"))
     private Set<Scope> scopes;
 
+    @Builder.Default
     @Column(name = "access_token_ttl")
-    private Long accessTokenTtl;
+    private Long accessTokenTtl = TimeUnit.HOURS.toSeconds(1);
 
+    @Builder.Default
     @Column(name = "refresh_token_ttl")
-    private Long refreshTokenTtl;
+    private Long refreshTokenTtl = TimeUnit.DAYS.toSeconds(30);
 
     @Column(name = "issued_at")
     private LocalDateTime issuedAt;

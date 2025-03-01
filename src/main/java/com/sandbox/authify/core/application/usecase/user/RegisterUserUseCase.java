@@ -8,10 +8,12 @@ import com.sandbox.authify.core.common.exception.ValidationException;
 import com.sandbox.authify.core.domain.entity.User;
 import com.sandbox.authify.core.port.repository.UserRepository;
 import com.sandbox.authify.core.port.security.Hashing;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.*;
 
 import java.util.*;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class RegisterUserUseCase {
 

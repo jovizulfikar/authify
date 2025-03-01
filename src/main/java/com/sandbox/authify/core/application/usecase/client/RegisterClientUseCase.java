@@ -10,12 +10,14 @@ import com.sandbox.authify.core.port.repository.ClientRepository;
 import com.sandbox.authify.core.port.security.Hashing;
 import com.sandbox.authify.core.port.util.IdGenerator;
 import com.sandbox.authify.core.port.util.PasswordGenerator;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+@ApplicationScoped
 @RequiredArgsConstructor
 public class RegisterClientUseCase {
 
